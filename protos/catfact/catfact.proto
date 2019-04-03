@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+message CatFactRequest { }
+
+message CatFactResponse {
+    string fact = 1;
+}  
+
+service CatFactService {
+    rpc Get(CatFactRequest) returns (CatFactResponse) { }
+}
