@@ -6,7 +6,7 @@ metadata:
     app: cf-factservice
 spec:
   ports:
-  - name: grpc-port
+  - name: grpc-web-port
     port: 80
   selector:
     app: cf-factservice
