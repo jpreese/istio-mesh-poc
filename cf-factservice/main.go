@@ -8,12 +8,12 @@ import (
 	"net"
 	"time"
 
-	"github.com/jpreese/istio-mesh-poc/cf-factservice/protos/catfact"
+	"github.com/jpreese/istio-mesh-poc/cf-factservice/proto/catfact"
 	"google.golang.org/grpc"
 )
 
 func main() {
-	const port = 80
+	const port = 8000
 
 	log.Printf("Attempting to listen on port: %d", port)
 	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", port))

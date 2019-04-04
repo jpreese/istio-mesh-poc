@@ -4,6 +4,10 @@ WORKDIR /cf-frontend
 RUN npm install
 RUN npx webpack main.js
 
-FROM nginx:1.15.8-alpine
-COPY --from=builder /cf-frontend /usr/share/nginx/html
-EXPOSE 80
+FROM python:2.7
+WORKDIR /cf-frontend
+
+COPY --from=builder /cf-frontend/ .
+ENTRYPOINT [ "python" ]
+CMD [ "-m", "SimpleHTTPServer", "9000" ]
+EXPOSE 9000

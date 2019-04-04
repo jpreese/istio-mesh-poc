@@ -1,31 +1,31 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: cf-factservice
+  name: cf-frontend
   labels:
-    app: cf-factservice
+    app: cf-frontend
 spec:
   ports:
-  - name: grpc-web
-    port: 8000
+  - name: http
+    port: 9000
   selector:
-    app: cf-factservice
+    app: cf-frontend
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: cf-factservice
+  name: cf-frontend
 spec:
   replicas: 1
   template:
     metadata:
       labels:
-        app: cf-factservice
+        app: cf-frontend
         version: v1
     spec:
       containers:
-      - name: cf-factservice
-        image: cf-factservice:v1
+      - name: cf-frontend
+        image: cf-frontend:v1
         imagePullPolicy: Never
         ports:
-        - containerPort: 8000
+        - containerPort: 9000
