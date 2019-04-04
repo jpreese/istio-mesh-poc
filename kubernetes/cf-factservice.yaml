@@ -8,6 +8,7 @@ spec:
   ports:
   - name: grpc-web-port
     port: 80
+    targetPort: 8000
   selector:
     app: cf-factservice
 ---
@@ -26,6 +27,4 @@ spec:
       containers:
       - name: cf-factservice
         image: cf-factservice:v1
-        imagePullPolicy: Always
-        ports:
-        - containerPort: 80
+        imagePullPolicy: Never
