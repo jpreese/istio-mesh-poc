@@ -13,7 +13,7 @@ import (
 )
 
 func main() {
-	const port = 8000
+	const port = 80
 
 	log.Printf("Attempting to listen on port: %d", port)
 	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", port))
