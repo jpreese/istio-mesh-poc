@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/jpreese/istio-mesh-poc/cf-factservice/proto/catfact"
+	"github.com/jpreese/istio-mesh-poc/cf-imageservice/proto/catimage"
 	"google.golang.org/grpc"
 )
 
@@ -37,6 +38,7 @@ func main() {
 
 // Server represents the gRPC server
 type Server struct {
+	catImageClient catimage.CatImageServiceClient
 }
 
 // Get receiver to return a random cat fact
@@ -63,6 +65,11 @@ func (s *Server) Get(ctx context.Context, _ *catfact.CatFactRequest) (*catfact.C
 
 	rand.Seed(time.Now().UnixNano())
 	randomFact := facts[rand.Intn(len(facts))]
+
+	/* additional call here */
+	imageResponse, _ := s.catImageClient.Get(ctx, &catimage.CatImageRequest{})
+	log.Printf("here's another cool fact . . . %s", imageResponse.Fact)
+	/* boom */
 
 	log.Printf("sending fact . . . %s", randomFact)
 
