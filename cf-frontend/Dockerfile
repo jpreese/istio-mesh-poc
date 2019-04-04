@@ -9,5 +9,5 @@ WORKDIR /cf-frontend
 
 COPY --from=builder /cf-frontend/ .
 ENTRYPOINT [ "python" ]
-CMD [ "-m", "SimpleHTTPServer", "9000" ]
-EXPOSE 9000
+CMD [ "-m", "SimpleHTTPServer", "80" ]
+EXPOSE 80
