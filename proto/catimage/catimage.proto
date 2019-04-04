@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+message CatImageRequest { }
+
+message CatImageResponse {
+    string fact = 1;
+}  
+
+service CatImageService {
+    rpc Get(CatImageRequest) returns (CatImageResponse) { }
+}
