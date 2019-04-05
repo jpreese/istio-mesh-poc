@@ -1,34 +1,58 @@
 apiVersion: networking.istio.io/v1alpha3
-kind: Gateway
+kind: Gateway # Gateway is a CRD (Custom Resource Definition) provided by Istio. This is not native to Kubernetes.
 metadata:
   name: gateway
 spec:
   selector:
+    # when you install Istio, it's essentially applying yamls to Kubernetes. Defining CRDs, Services, etc. When you install istio
+    # a number of Istio defined pods are spun up and managed by Kubernetes. Each service can have a label. In this case, we are saying
+    # find me the pod that has the istio tag and a label of ingressgateway (which can be found in istio.yaml).
     istio: ingressgateway
   servers:
+
+  # This exposes port 80 over HTTP for all hosts. This allows traffic to hit the Gateway, but said traffic isn't going to go anywhere.
+  # you need a VirtualService to actually route the traffic.
+
+  # By default, the Ingress port for the ingressgateway is 31380 (localhost:31380). Inside the mesh it will be 80.
+  # This is similar to Docker when running a container e.g. docker run -p 31380:80
   - port:
       number: 80
       name: http
       protocol: HTTP
     hosts:
     - "*"
+
+    # Just because a Gateway is defined, doesn't necessarily mean the port is exposed.
+    # Istio sits inside of Kubernetes, so it is up to Kubernetes to allow initial requests to reach the Gateway:
+
+    # From Istio docs:
+    # While Istio will configure the proxy to listen on these ports, it is the responsibility of the user 
+    # to ensure that external traffic to these ports are allowed into the mesh.
 ---
 apiVersion: networking.istio.io/v1alpha3
-kind: VirtualService
+kind: VirtualService # again, as we are using the networking.istio.io API, VirtualService is a CRD provided by Istio.
 metadata:
   name: virtual-service
 spec:
   hosts:
   - "*"
   gateways:
+  # For this VirtualService, use the Gateway as defined above.
   - gateway
+
+  # This is where routing rules begin. Here we are looking at HTTP requests.
   http:
   - match:
     - uri:
-        prefix: /CatFactService
+        prefix: /CatFactService # If the request has a prefix of /CatFactService ..
     route:
     - destination:
-        host: cf-factservice
+        # send the request to the cf-factservice. cf-factservice is a Service defined in cf-factservice.yaml
+        # This is done because Kubernetes Services are meant to be long-lived, whereas individual pods are meant to
+        # be cattle. Pods spin up and die all the time, and their IP can't be gaurenteed. This would make routing a
+        # nightmare. Instead, you route traffic to stable Services, which then forward your request into the pod.
+        # This also gives you some free load balancing out of the box.
+        host: cf-factservice 
     corsPolicy:
       allowOrigin:
         - "*"
@@ -57,6 +81,7 @@ spec:
         - grpc-status
         - grpc-message
       allowCredentials: true
+  # This is the definition for the default route. If nothing above matches, forward onto the cf-frontend service (the UI)
   - route:
     - destination:
         host: cf-frontend
