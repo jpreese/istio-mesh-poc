@@ -6,7 +6,7 @@
 Additional tid bits I found interesting that aren't called out directly in the commented source.
 
 ### Beware the LoadBalancer Service type
-When Istio is installed onto your Kubernetes cluster, a pod is deployed called the ingressgateway. This is the pod responsible for handling incoming traffic into your mesh. Tthis pod is created using LoadBalancer as the service type (at least using the [helm installer](https://istio.io/docs/setup/kubernetes/install/helm/).
+When Istio is installed onto your Kubernetes cluster, a pod is deployed called the ingressgateway. This is the pod responsible for handling incoming traffic into your mesh. This pod is created using LoadBalancer as the service type (at least using the [helm installer](https://istio.io/docs/setup/kubernetes/install/helm/).
 
 LoadBalancer is a service type that exists to work with an already existing, external load balancer. If you do not have one, as is the case with Kubernetes for Docker Destop, the port won't actually be exposed and no traffic will be allowed into your cluster.
 
