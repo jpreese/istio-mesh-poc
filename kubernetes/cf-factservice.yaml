@@ -30,7 +30,7 @@ metadata:
   name: cf-factservice-deployment
 
 # This defines the desired state of the deployment. If values below change, the previous pods will need to
-# be destroyed, and the new ones will be created using the updated spec
+# be destroyed, and the new ones will be created using the updated spec.
 spec:
   # A deployment will create a ReplicaSet, this states that we only want a single pod stood up.
   replicas: 1
