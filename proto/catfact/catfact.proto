@@ -1,8 +1,19 @@
 syntax = "proto3";
 
+/* .proto signifies that this is a protocol buffer. while they can be
+*  used to develop gRPC services, proto files are not gRPC specific */
+
 message CatFactRequest { }
 
 message CatFactResponse {
+
+    /* protocol buffers rely on a unique number for its fields.
+    * in this face, the unique id is 1. you could even change the
+    * name of the field (fact) and it wouldn't impact how the message
+    * is being sent. As a fun note, numbers 1-15 take up one byte whereas
+    * 16+ take two, so to min-max you should choose frequently occuring fields
+    * in the 1-15 range. you could even leave some slots open for future use.
+    */
     string fact = 1;
 }  
 
