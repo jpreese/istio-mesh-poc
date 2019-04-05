@@ -45,4 +45,5 @@ spec:
       - name: cf-factservice
         image: cf-factservice:v1
         ports:
+        # Traffic coming to these pods should use port 80 for the container
         - containerPort: 80

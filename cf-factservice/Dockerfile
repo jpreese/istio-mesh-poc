@@ -21,5 +21,5 @@ FROM scratch
 COPY --from=builder /bin/main .
 
 # Annotate that 80 should be exposed and run the main.exe binary when the container is run
-EXPOSE 80
 ENTRYPOINT ["./main"]
+EXPOSE 80
