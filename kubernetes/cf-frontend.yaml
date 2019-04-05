@@ -26,4 +26,3 @@ spec:
       containers:
       - name: cf-frontend
         image: cf-frontend:v1
-        imagePullPolicy: Never
