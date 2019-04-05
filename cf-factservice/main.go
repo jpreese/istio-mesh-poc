@@ -16,16 +16,23 @@ func main() {
 	const port = 80
 
 	log.Printf("Attempting to listen on port: %d", port)
+
+	// expose port 80 requests using TCP
 	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", port))
 	if err != nil {
 		log.Fatalf("Failed to listen on port: %d (%v)", port, err)
 	}
-	defer lis.Close()
 
+	// This is explained in a little more detail below, but this lets us pass all of our
+	// rpc definitions to the gRPC server so that it can use them to handle gRPC requests
 	catFactServer := Server{}
+
+	// using the grpc package provided by Google, create a new gRPC server to facilitate gRPC requests
 	grpcServer := grpc.NewServer()
 	log.Printf("Service created.")
 
+	// tell the gRPC server which services we want it to handle and support
+	// in this case, it's a single service -- the CatFact service
 	catfact.RegisterCatFactServiceServer(grpcServer, &catFactServer)
 	log.Printf("Service registered.")
 
@@ -36,10 +43,15 @@ func main() {
 }
 
 // Server represents the gRPC server
+// This is just a means to expose our rpc methods. GOLANG uses what they call Receivers.
+// If a method is prefixed with (x *SomeType), that means if you create a new SomeType,
+// that method will be exposed to that type.
 type Server struct {
 }
 
 // Get receiver to return a random cat fact
+// This is an example associating Get() with the Server type.
+// It is now possible to create a new Server instance and call .Get() on it.
 func (s *Server) Get(ctx context.Context, _ *catfact.CatFactRequest) (*catfact.CatFactResponse, error) {
 
 	facts := [...]string{

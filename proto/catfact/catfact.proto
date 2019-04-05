@@ -3,6 +3,9 @@ syntax = "proto3";
 /* .proto signifies that this is a protocol buffer. while they can be
 *  used to develop gRPC services, proto files are not gRPC specific */
 
+/* To compile proto buffers into different languages to be used by clients
+* you'll need protoc which can be found here https://github.com/protocolbuffers/protobuf/releases */
+
 message CatFactRequest { }
 
 message CatFactResponse {
