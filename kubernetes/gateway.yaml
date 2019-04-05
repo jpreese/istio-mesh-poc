@@ -48,10 +48,6 @@ spec:
     route:
     - destination:
         # send the request to the cf-factservice. cf-factservice is a Service defined in cf-factservice.yaml
-        # This is done because Kubernetes Services are meant to be long-lived, whereas individual pods are meant to
-        # be cattle. Pods spin up and die all the time, and their IP can't be gaurenteed. This would make routing a
-        # nightmare. Instead, you route traffic to stable Services, which then forward your request into the pod.
-        # This also gives you some free load balancing out of the box.
         host: cf-factservice 
     corsPolicy:
       allowOrigin:

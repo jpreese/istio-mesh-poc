@@ -1,9 +1,9 @@
+# As cf-factservice.yaml and this file are essentially identical, please reference that file for any comments
+
 apiVersion: v1
 kind: Service
 metadata:
   name: cf-frontend
-  labels:
-    app: cf-frontend
 spec:
   ports:
   - name: http

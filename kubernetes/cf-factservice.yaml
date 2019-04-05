@@ -1,9 +1,13 @@
 apiVersion: v1
-kind: Service
+
+# This is a Kubernetes Resource that is provided out of the box (i.e. no need for Istio)
+# Services are meant to be long-lived, whereas individual pods are meant to
+# be cattle. Pods spin up and die all the time, and their IP can't be gaurenteed. This would make routing a
+# nightmare. Instead, you route traffic to stable Services, which then forward your request into the pod.
+# This also gives you some free load balancing out of the box.
+kind: Service 
 metadata:
   name: cf-factservice
-  labels:
-    app: cf-factservice
 spec:
   ports:
   - name: grpc-web
