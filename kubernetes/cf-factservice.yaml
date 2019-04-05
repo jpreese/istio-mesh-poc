@@ -7,22 +7,36 @@ apiVersion: v1
 # This also gives you some free load balancing out of the box.
 kind: Service 
 metadata:
-  name: cf-factservice
+  name: cf-factservice-service
 spec:
   ports:
+  # The service will be listening for grpc-web requests on port 80. Port naming allows Istio to perform
+  # additional routing features. In this case, we know the traffic going to this service will be grpc-web requests.
+  # Thus, when Istio sees a grpc-web request, on 80, it knows to use the envoy.grpc_web filter which can translate
+  # grpc-web to a full gRPC request.
+  # This functionality was added by istio and the PR here https://github.com/istio/istio/pull/10064
   - name: grpc-web
     port: 80
   selector:
+    # This associates the service with the cf-factservice pod, which is defined below.
+    # Requests that come to the service will be routed to one of the pods in front of this service.
     app: cf-factservice
 ---
 apiVersion: extensions/v1beta1
+# A Deployment is a Kubernetes construct and is essentially a wrapper around a ReplicaSet (a set of pods).
+# This defines the desired state of the service.
 kind: Deployment
 metadata:
-  name: cf-factservice
+  name: cf-factservice-deployment
+
+# This defines the desired state of the deployment. If values below change, the previous pods will need to
+# be destroyed, and the new ones will be created using the updated spec
 spec:
+  # A deployment will create a ReplicaSet, this states that we only want a single pod stood up.
   replicas: 1
   template:
     metadata:
+      # Define a label (app=cf-factservice) so that the Service resource defined above can find this deployment/created pods
       labels:
         app: cf-factservice
         version: v1

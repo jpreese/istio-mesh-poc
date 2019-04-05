@@ -48,7 +48,7 @@ spec:
     route:
     - destination:
         # send the request to the cf-factservice. cf-factservice is a Service defined in cf-factservice.yaml
-        host: cf-factservice 
+        host: cf-factservice-service
     corsPolicy:
       allowOrigin:
         - "*"
@@ -80,4 +80,4 @@ spec:
   # This is the definition for the default route. If nothing above matches, forward onto the cf-frontend service (the UI)
   - route:
     - destination:
-        host: cf-frontend
+        host: cf-frontend-service

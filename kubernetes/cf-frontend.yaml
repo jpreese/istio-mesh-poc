@@ -3,10 +3,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: cf-frontend
+  name: cf-frontend-service
 spec:
   ports:
-  - name: http
+  - name: http # This is a difference, but just tells the service to listen on HTTP (vs grpc-web)
     port: 80
   selector:
     app: cf-frontend
@@ -14,14 +14,13 @@ spec:
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: cf-frontend
+  name: cf-frontend-deployment
 spec:
   replicas: 1
   template:
     metadata:
       labels:
         app: cf-frontend
-        version: v1
     spec:
       containers:
       - name: cf-frontend
