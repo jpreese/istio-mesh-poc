@@ -26,6 +26,5 @@ spec:
       containers:
       - name: cf-factservice
         image: cf-factservice:v1
-        imagePullPolicy: Never
         ports:
         - containerPort: 80
